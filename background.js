@@ -195,7 +195,7 @@ const updateBypassDefinitions = callback => {
 			uniqueness.push(val)
 			upstreamInjectionScript = upstreamInjectionScript.split("{{channel."+name+"}}").join(channel[name] = "data-" + val)
 		})
-		;["infoLinkvertise","infoFileHoster","infoOutdated","crowdWait","crowdDisabled"].forEach(name => {
+		;["infoFileHoster","infoOutdated","crowdWait","crowdDisabled"].forEach(name => {
 			upstreamInjectionScript = upstreamInjectionScript.split("{{msg."+name+"}}").join(brws.i18n.getMessage(name).split("\\").join("\\\\").split("\"").join("\\\""))
 		})
 		upstreamInjectionScript = upstreamInjectionScript.split("{{icon/48.png}}").join(brws.runtime.getURL("icon/48.png"))
@@ -255,7 +255,7 @@ const updateBypassDefinitions = callback => {
 							finishDownload()
 						}
 					}
-					xhr.open("GET", "https://raw.githubusercontent.com/Sainan/Universal-Bypass/" + upstreamCommit + "/injection_script.js", true)
+					xhr.open("GET", "https://raw.githubusercontent.com/StuffNoOneCaresAbout/Universal-Bypass/" + upstreamCommit + "/injection_script.js", true)
 					xhr.send()
 					let xhr2 = new XMLHttpRequest()
 					xhr2.onload = () => {
@@ -271,7 +271,7 @@ const updateBypassDefinitions = callback => {
 							finishDownload()
 						}
 					}
-					xhr2.open("GET", "https://raw.githubusercontent.com/Sainan/Universal-Bypass/" + upstreamCommit + "/rules.json", true)
+					xhr2.open("GET", "https://raw.githubusercontent.com/StuffNoOneCaresAbout/Universal-Bypass/" + upstreamCommit + "/rules.json", true)
 					xhr2.send()
 				}
 			}
@@ -280,7 +280,7 @@ const updateBypassDefinitions = callback => {
 				sendToOptions({updateStatus})
 				callback(false)
 			}
-			xhr.open("GET", "https://api.github.com/repos/Sainan/Universal-Bypass/commits/master", true)
+			xhr.open("GET", "https://api.github.com/repos/StuffNoOneCaresAbout/Universal-Bypass/commits/master", true)
 			xhr.send()
 		}
 	}
@@ -630,7 +630,30 @@ const onBeforeRequest_rules = {
 	param_link_encoded_base64: details => getRedirect(decodeURIComponent(atob(details.url.substr(details.url.indexOf("?link=")+6)))),
 	param_kesehatan_base64: details => getRedirect(atob(details.url.substr(details.url.indexOf("?kesehatan=")+11))),
 	param_wildcard_base64: details => getRedirect(atob(new URL(details.url).searchParams.values().next().value)),
-	param_r_base64: details => getRedirect(atob(decodeURIComponent(details.url.substr(details.url.indexOf("?r=")+3))),0,safe_in),
+	param_r_base64: details => {
+		let pathname = new URL(details.url).pathname;
+		let split = pathname.split("/");
+		fetch("https://publisher.linkvertise.com/api/v1/redirect/link/dynamic/" + split[1] + "/" + decodeURIComponent(details.url.substr(details.url.indexOf("?r=")+3)) + "=?origin=").then(r=>r.json()).then(json=>{
+			if(json&&json.data.link.url)
+			{
+				var basepath = "/" + split[1] + "/" + json.data.link.url;
+				fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + basepath + "/captcha");
+				fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + basepath + "/countdown_impression?trafficOrigin=network");
+				fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + basepath + "/todo_impression?mobile=true&trafficOrigin=network");
+				fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + basepath + "/click?trafficOrigin=network");
+			}
+		})
+		let id=split[1],safe_in
+		for(let i in preflightRules.linkvertise_safe_in)
+		{
+			if(id==i)
+			{
+				safe_in=preflightRules.linkvertise_safe_in[i]
+				break
+			}
+		}
+		return getRedirect(atob(decodeURIComponent(details.url.substr(details.url.indexOf("?r=")+3))),0,safe_in)
+	},
 	param_kareeI_base64_pipes: details => getRedirect(atob(details.url.substr(details.url.indexOf("?kareeI=")+8)).split("||")[0]),
 	param_cr_base64: details => {
 		let i=details.url.indexOf("cr=")
