@@ -1,0 +1,21 @@
+name: Update Fork
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  auto-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: git config --global user.email "20838718+FireMasterK@users.noreply.github.com"
+      - run: git config --global user.name "FireMasterK"
+      - run: git remote add upstream https://github.com/Sainan/Universal-Bypass.git
+      - run: git fetch upstream
+      - run: git rebase upstream/master
+      - run: git remote rm upstream
+      - run: git commit --amend --no-edit
+      - run: git push --force

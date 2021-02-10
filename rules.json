@@ -106,10 +106,19 @@
 		"*://hightech.web.id/*?*=*"
 	],
 	"param_r_base64": [
+		"*://*.linkvertise.com/*?r=*",
+		"*://*.linkvertise.net/*?r=*",
+		"*://*.link-to.net/*?r=*",
 		"*://*/?r=*",
 		"*://*/api?r=*",
 		"*://*/api/?r=*"
 	],
+	"linkvertise_safe_in": {
+		"20540": 90,
+		"22792": 15,
+		"48331": 90,
+		"86430": 15
+	},
 	"param_kareeI_base64_pipes": [
 		"*://*.blogspot.com/?kareeI=*"
 	],
@@ -225,6 +234,10 @@
 	],
 	"useragent_chrome": [
 		"*://*.fluxteam.xyz/*"
+	],
+	"useragent_iphone": [
+		"*://*.linkvertise.net/*",
+		"*://*.linkvertise.com/*"
 	],
 	"useragent_empty": [
 		"*://*.sh.st/*",
@@ -344,7 +357,7 @@
 		"*://*.blasze.com/*",
 		"*://*.blasze.tk/*",
 		"*://*.ipgrab.org/*",
-		"*://*.gyazos.com/*"
-	],
-	"linkvertise_safe_in": {}
+		"*://*.gyazos.com/*",
+		"*://*.discord.kim/*"
+	]
 }
