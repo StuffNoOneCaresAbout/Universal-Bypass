@@ -43,16 +43,12 @@ unsafelyNavigate=target=>{
 	let url="https://universal-bypass.org/bypassed?target="+encodeURIComponent(target)+"&referer="+encodeURIComponent(referer)
 	switch(target)//All values here have been tested using "Take me to destinations after 0 seconds."
 	{
-		case (/fluxteam\.xyz/.exec(target)||{}).input:
-		url+="&safe_in=95"
-		break;
-
-		case (/krnl\.rocks/.exec(target)||{}).input:
+		case (/fluxteam|ksapi|oxygenu\.xyz/.exec(target)||{}).input:
 		url+="&safe_in=10"
 		break;
 
-		case "https://api.thinksuggest.org/?m=c&t=j&h=Jump&q=_clickout&pid=linkvertisenet&k=https%3A%2F%2Fproxoexploits.com%2FProxoKeyKeyLol&subid=klickouts":
-		url+="&safe_in=20"
+                case (/krnl\.rocks/.exec(target)||{}).input:
+                url+="&safe_in=15"
 		break;
 	}
 	unsafelyAssign(url)
