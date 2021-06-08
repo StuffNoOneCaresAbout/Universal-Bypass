@@ -1733,11 +1733,6 @@ ensureDomLoaded(()=>{
 		    })
 		})
 	})
-	domainBypass("duit.cc", () => {
-	    ifElement("[name=short]", a => {
-		safelyNavigate(a.value)
-	    })
-	})
 	domainBypass("theepochtimes.com", () => {
 	    awaitElement("#landing-page", subscriptionWall => {
 		subscriptionWall.remove()
@@ -1746,8 +1741,10 @@ ensureDomLoaded(()=>{
 	})
 	domainBypass("apkdone.com", () => {
 	    ifElement("#download", a=>{
-		countdown(0)
-		safelyNavigate(document.querySelector("#download > a:nth-child(1)").href)
+	        ensureDomLoaded(()=>{
+	            countdown(0)
+	            safelyNavigate(document.querySelector("#download > a:nth-child(1)").href)
+	        })
 	    })
 	})
 	if(bypassed)
